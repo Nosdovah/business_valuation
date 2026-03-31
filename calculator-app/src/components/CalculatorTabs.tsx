@@ -53,11 +53,11 @@ const CalculatorTabs: React.FC = () => {
     setResult(r);
   };
 
-  const renderInput = (name: string, label: string, icon: React.ReactNode, placeholder: string) => (
+  const renderInput = (name: string, label: string, icon: React.ReactNode, placeholder: string, unit?: string) => (
     <div key={name} className="flex flex-col gap-1 mb-4">
       <label className="text-sm text-textSecondary font-medium pl-1">{label}</label>
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-textSecondary">
+      <div className="relative flex items-center">
+        <div className="absolute left-3 text-textSecondary pointer-events-none">
           {icon}
         </div>
         <input
@@ -66,8 +66,13 @@ const CalculatorTabs: React.FC = () => {
           value={inputs[name] || ''}
           onChange={handleInputChange}
           placeholder={placeholder}
-          className="glass-input pl-10 w-full"
+          className={`glass-input pl-10 w-full ${unit ? 'pr-12' : ''}`}
         />
+        {unit && (
+          <div className="absolute right-3 text-xs font-semibold text-textSecondary/50 pointer-events-none uppercase">
+            {unit}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -114,11 +119,11 @@ const CalculatorTabs: React.FC = () => {
 
       <div className="p-6 flex-grow flex flex-col">
         <div className="flex-grow space-y-2">
-           {fields.includes('fv') && renderInput('fv', 'Future Value (FV)', <DollarSign className="w-4 h-4" />, '135500')}
-           {fields.includes('pv') && renderInput('pv', 'Present Value (PV)', <DollarSign className="w-4 h-4" />, '100000')}
-           {fields.includes('pmt') && renderInput('pmt', 'Payment (PMT)', <DollarSign className="w-4 h-4" />, '10000')}
-           {fields.includes('i') && renderInput('i', 'Interest Rate (i % per period)', <Percent className="w-4 h-4" />, '6')}
-           {fields.includes('n') && renderInput('n', 'Number of Periods (n)', <Clock className="w-4 h-4" />, '14')}
+           {fields.includes('fv') && renderInput('fv', 'Future Value (FV)', <DollarSign className="w-4 h-4" />, '135500', 'USD')}
+           {fields.includes('pv') && renderInput('pv', 'Present Value (PV)', <DollarSign className="w-4 h-4" />, '100000', 'USD')}
+           {fields.includes('pmt') && renderInput('pmt', 'Payment (PMT)', <DollarSign className="w-4 h-4" />, '10000', 'USD')}
+           {fields.includes('i') && renderInput('i', 'Interest Rate (i % per period)', <Percent className="w-4 h-4" />, '6', '%')}
+           {fields.includes('n') && renderInput('n', 'Number of Periods (n)', <Clock className="w-4 h-4" />, '14', 'N')}
         </div>
 
         <button onClick={handleCalculate} className="btn-primary w-full mt-6 flex items-center justify-center gap-2 py-3 text-lg">
