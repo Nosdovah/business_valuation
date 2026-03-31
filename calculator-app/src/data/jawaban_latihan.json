@@ -1,0 +1,108 @@
+{
+    "kalkulator_anuitas_data": [
+        {
+            "id": "soal_1a",
+            "tipe_kalkulasi": "Cari PMT (Berdasarkan FV)",
+            "deskripsi": "Menghitung tabungan rutin tahunan untuk mencapai target dana di masa depan.",
+            "input": {
+                "future_value_fv": 135500,
+                "suku_bunga_i": 0.06,
+                "periode_n": 14
+            },
+            "rumus_digunakan": "PMT = FV / (((1 + i)^n - 1) / i)",
+            "hasil": {
+                "nilai": 6447.77,
+                "satuan": "USD / tahun"
+            }
+        },
+        {
+            "id": "soal_1b",
+            "tipe_kalkulasi": "Cari PV (Berdasarkan FV)",
+            "deskripsi": "Menghitung uang yang harus disetor sekaligus saat ini untuk mencapai target masa depan.",
+            "input": {
+                "future_value_fv": 135500,
+                "suku_bunga_i": 0.06,
+                "periode_n": 14
+            },
+            "rumus_digunakan": "PV = FV / (1 + i)^n",
+            "hasil": {
+                "nilai": 59931.88,
+                "satuan": "USD"
+            }
+        },
+        {
+            "id": "soal_2a",
+            "tipe_kalkulasi": "Cari PMT (Ordinary Annuity)",
+            "deskripsi": "Menghitung cicilan pinjaman yang dibayar di AKHIR bulan.",
+            "input": {
+                "present_value_pv": 50000,
+                "suku_bunga_i_bulanan": 0.009167,
+                "periode_n_bulan": 300
+            },
+            "rumus_digunakan": "PMT = PV / ((1 - (1 + i)^-n) / i)",
+            "hasil": {
+                "nilai": 490.03,
+                "satuan": "USD / bulan"
+            }
+        },
+        {
+            "id": "soal_2b",
+            "tipe_kalkulasi": "Cari PMT (Annuity Due)",
+            "deskripsi": "Menghitung cicilan pinjaman yang dibayar di AWAL bulan.",
+            "input": {
+                "pmt_ordinary": 490.03,
+                "suku_bunga_i_bulanan": 0.009167
+            },
+            "rumus_digunakan": "PMT_due = PMT_ordinary / (1 + i)",
+            "hasil": {
+                "nilai": 485.58,
+                "satuan": "USD / bulan"
+            }
+        },
+        {
+            "id": "soal_3",
+            "tipe_kalkulasi": "Cari PMT (Berdasarkan PV)",
+            "deskripsi": "Menghitung batas pengambilan dana pensiun tahunan agar habis tepat pada waktunya.",
+            "input": {
+                "present_value_pv": 100000000,
+                "suku_bunga_i": 0.07,
+                "periode_n": 10
+            },
+            "rumus_digunakan": "PMT = PV / ((1 - (1 + i)^-n) / i)",
+            "hasil": {
+                "nilai": 14237750.27,
+                "satuan": "IDR / tahun"
+            }
+        },
+        {
+            "id": "soal_4",
+            "tipe_kalkulasi": "Cari Periode (n)",
+            "deskripsi": "Menghitung berapa lama dana akan bertahan jika diambil rutin dengan jumlah tertentu.",
+            "input": {
+                "present_value_pv": 100000000,
+                "payment_pmt": 10000000,
+                "suku_bunga_i": 0.07
+            },
+            "rumus_digunakan": "n = -(log(1 - (PV * i) / PMT)) / log(1 + i)",
+            "hasil": {
+                "nilai": 17.79,
+                "satuan": "Tahun"
+            }
+        },
+        {
+            "id": "soal_5",
+            "tipe_kalkulasi": "Cari Suku Bunga (i)",
+            "deskripsi": "Mencari tingkat bunga dari sebuah anuitas (memerlukan algoritma iteratif di backend).",
+            "input": {
+                "present_value_pv": 100000000,
+                "payment_pmt": 12000000,
+                "periode_n": 12
+            },
+            "rumus_digunakan": "Pencarian numerik iteratif untuk i pada persamaan: PV = PMT * ((1 - (1 + i)^-n) / i)",
+            "hasil": {
+                "nilai": 0.0611,
+                "satuan": "Desimal (6.11%)"
+            }
+        }
+    ]
+}
