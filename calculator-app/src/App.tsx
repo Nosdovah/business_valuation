@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="min-h-screen relative">
       <div className="bg-blobs"></div>
-      
+
       <header className="container mx-auto px-4 py-10">
         <div className="flex items-center gap-3 justify-center text-center">
           <div className="bg-white/10 p-3 rounded-xl backdrop-blur-md border border-white/5 shadow-xl">
@@ -33,7 +33,7 @@ function App() {
         </div>
         <div className="w-full xl:w-[500px] shrink-0 order-1 xl:order-2 pb-12">
           <div className="sticky top-6">
-             <CalculatorTabs />
+            <CalculatorTabs />
           </div>
         </div>
       </main>
@@ -45,7 +45,7 @@ function App() {
             <span className="text-xl font-bold gradient-text tracking-tight">Raihan Hanif Firdaus</span>
             <span className="hidden md:block w-px h-4 bg-white/20"></span>
             <span className="bg-white/10 px-3 py-1 rounded-full border border-white/5 text-sm font-mono text-textPrimary/80">
-              ID: 023124157
+              NPM: 023124157
             </span>
           </div>
           <p className="text-xs text-textSecondary/40 mt-4 font-accent">
