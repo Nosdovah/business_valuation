@@ -1,7 +1,6 @@
 # 💰 Kalkulator Finansial: Nilai Waktu Uang (TVM) & Anuitas
 
 ![Status Proyek](https://img.shields.io/badge/Status-Aktif-brightgreen)
-![Lisensi](https://img.shields.io/badge/Lisensi-MIT-blue)
 
 ## 📖 Deskripsi Singkat
 Proyek ini adalah kalkulator finansial interaktif berbasis web yang dirancang untuk menyelesaikan berbagai masalah perhitungan **Nilai Waktu Uang (Time Value of Money)** dan **Anuitas**. Kalkulator ini dibangun sebagai alat bantu praktis untuk memproyeksikan tabungan, menghitung cicilan pinjaman (KPR/kendaraan), merencanakan dana pensiun, dan menganalisis kelayakan investasi. 
