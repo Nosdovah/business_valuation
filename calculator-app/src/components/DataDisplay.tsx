@@ -8,24 +8,24 @@ const DataDisplay: React.FC = () => {
 
   const formatFormula = (formula: string) => {
     if (!formula) return '';
-    // Use clear placeholders to avoid partial string replacements
+    // Double escape backslashes for JS strings to survive production builds
     let latex = formula;
     
     // Replace terms first
-    latex = latex.replace(/PMT_due/g, '\\text{PMT}_{due}');
-    latex = latex.replace(/PMT_ordinary/g, '\\text{PMT}_{ord}');
-    latex = latex.replace(/PMT/g, '\\text{PMT}');
-    latex = latex.replace(/PV/g, '\\text{PV}');
-    latex = latex.replace(/FV/g, '\\text{FV}');
-    latex = latex.replace(/log/g, '\\log');
+    latex = latex.replace(/PMT_due/g, '\\\\text{PMT}_{due}');
+    latex = latex.replace(/PMT_ordinary/g, '\\\\text{PMT}_{ord}');
+    latex = latex.replace(/PMT/g, '\\\\text{PMT}');
+    latex = latex.replace(/PV/g, '\\\\text{PV}');
+    latex = latex.replace(/FV/g, '\\\\text{FV}');
+    latex = latex.replace(/log/g, '\\\\log');
 
     // Handle symbols
-    latex = latex.replace(/\s\/\s/g, ' \\div ');
-    latex = latex.replace(/\s\*\s/g, ' \\times ');
-    latex = latex.replace(/\//g, ' \\div ');
-    latex = latex.replace(/\*/g, ' \\times ');
+    latex = latex.replace(/\s\/\s/g, ' \\\\div ');
+    latex = latex.replace(/\s\*\s/g, ' \\\\times ');
+    latex = latex.replace(/\//g, ' \\\\div ');
+    latex = latex.replace(/\*/g, ' \\\\times ');
 
-    // Handle powers - do these last to prevent grouping issues
+    // Handle powers
     latex = latex.replace(/\^-n/g, '^{-n}');
     latex = latex.replace(/\^n/g, '^{n}');
 
