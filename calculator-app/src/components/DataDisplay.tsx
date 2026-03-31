@@ -1,6 +1,7 @@
 import React from 'react';
 import data from '../data/jawaban_latihan.json';
 import type { KalkulatorData } from '../types/finance';
+import { InlineMath } from 'react-katex';
 
 const DataDisplay: React.FC = () => {
   const problems = data.kalkulator_anuitas_data as unknown as KalkulatorData[];
@@ -8,36 +9,35 @@ const DataDisplay: React.FC = () => {
   const formatFormula = (formula: string) => {
     if (!formula) return '';
     
-    // Sort keys by length descending to match most specific terms first
+    // We use \u005c to force a literal backslash into the string
+    // that survives Vercel/Vite production minification.
+    const BS = '\\u005c';
+    
     const replacements: Record<string, string> = {
-      'PMT_due': '\\\\text{PMT}_{due}',
-      'PMT_ordinary': '\\\\text{PMT}_{ord}',
-      'PMT': '\\\\text{PMT}',
-      'PV': '\\\\text{PV}',
-      'FV': '\\\\text{FV}',
-      'log': '\\\\log',
-      ' * ': ' \\\\times ',
-      ' / ': ' \\\\div ',
-      '*': ' \\\\times ',
-      '/': ' \\\\div ',
+      'PMT_due': `${BS}text{PMT}_{due}`,
+      'PMT_ordinary': `${BS}text{PMT}_{ord}`,
+      'PMT': `${BS}text{PMT}`,
+      'PV': `${BS}text{PV}`,
+      'FV': `${BS}text{FV}`,
+      'log': `${BS}log`,
+      ' * ': ` ${BS}times `,
+      ' / ': ` ${BS}div `,
+      '*': ` ${BS}times `,
+      '/': ` ${BS}div `,
       '^-n': '^{-n}',
       '^n': '^{n}'
     };
 
     let result = formula;
     
-    // 1. First, temporarily replace symbols and specific terms with unique markers
-    // to prevent double-replacement during subsequent passes.
     const markers: Record<string, string> = {};
     Object.keys(replacements).sort((a, b) => b.length - a.length).forEach((key, idx) => {
       const marker = `__MARKER_${idx}__`;
       markers[marker] = replacements[key];
-      // Use regex with boundaries for words, literal search for symbols
       const regex = /^[a-zA-Z_]+$/.test(key) ? new RegExp(`\\b${key}\\b`, 'g') : new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
       result = result.replace(regex, marker);
     });
 
-    // 2. Finally, swap markers for their LaTeX equivalents
     Object.keys(markers).forEach(marker => {
       result = result.replace(new RegExp(marker, 'g'), markers[marker]);
     });
@@ -81,9 +81,9 @@ const DataDisplay: React.FC = () => {
                 <span className="text-sm font-medium text-textPrimary/80">{problem.hasil.satuan}</span>
               </div>
               <div className="mt-3 overflow-x-auto">
-                 <span className="text-xs text-textSecondary/60 block mb-1">Formula (Debug):</span>
-                 <div className="text-sm text-textPrimary/90 bg-white/5 p-2 rounded border border-white/5 font-mono">
-                    {formatFormula(problem.rumus_digunakan)}
+                 <span className="text-xs text-textSecondary/60 block mb-1">Formula:</span>
+                 <div className="text-sm text-textPrimary/90 bg-white/5 p-2 rounded border border-white/5">
+                    <InlineMath math={formatFormula(problem.rumus_digunakan)} />
                  </div>
               </div>
             </div>
