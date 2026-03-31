@@ -9,37 +9,35 @@ const DataDisplay: React.FC = () => {
   const formatFormula = (formula: string) => {
     if (!formula) return '';
     
-    // We use \u005c to force a literal backslash into the string
-    // that survives Vercel/Vite production minification.
-    const BS = '\\u005c';
-    
-    const replacements: Record<string, string> = {
-      'PMT_due': `${BS}text{PMT}_{due}`,
-      'PMT_ordinary': `${BS}text{PMT}_{ord}`,
-      'PMT': `${BS}text{PMT}`,
-      'PV': `${BS}text{PV}`,
-      'FV': `${BS}text{FV}`,
-      'log': `${BS}log`,
-      ' * ': ` ${BS}times `,
-      ' / ': ` ${BS}div `,
-      '*': ` ${BS}times `,
-      '/': ` ${BS}div `,
-      '^-n': '^{-n}',
-      '^n': '^{n}'
-    };
+    // Define exact replacements to prevent double-wrapping
+    const replacements: [RegExp, string][] = [
+      [/\bPMT_due\b/g, '\\text{PMT}_{due}'],
+      [/\bPMT_ordinary\b/g, '\\text{PMT}_{ord}'],
+      [/\bPMT\b/g, '\\text{PMT}'],
+      [/\bPV\b/g, '\\text{PV}'],
+      [/\bFV\b/g, '\\text{FV}'],
+      [/\blog\b/g, '\\log'],
+      [/\s\/\s/g, ' \\div '],
+      [/\s\*\s/g, ' \\times '],
+      [/\^-n/g, '^{-n}'],
+      [/\^n/g, '^{n}'],
+      [/(?<!\\)\//g, ' \\div '],
+      [/(?<!\\)\*/g, ' \\times ']
+    ];
 
     let result = formula;
     
-    const markers: Record<string, string> = {};
-    Object.keys(replacements).sort((a, b) => b.length - a.length).forEach((key, idx) => {
-      const marker = `__MARKER_${idx}__`;
-      markers[marker] = replacements[key];
-      const regex = /^[a-zA-Z_]+$/.test(key) ? new RegExp(`\\b${key}\\b`, 'g') : new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+    // We use a temporary placeholder to prevent double-replacements
+    const markers: string[] = [];
+    replacements.forEach(([regex, latex], idx) => {
+      const marker = `##MARKER${idx}##`;
+      markers[idx] = latex;
       result = result.replace(regex, marker);
     });
 
-    Object.keys(markers).forEach(marker => {
-      result = result.replace(new RegExp(marker, 'g'), markers[marker]);
+    // Final pass to put the LaTeX in
+    markers.forEach((latex, idx) => {
+      result = result.replace(new RegExp(`##MARKER${idx}##`, 'g'), latex);
     });
 
     return result;
