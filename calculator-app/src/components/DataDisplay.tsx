@@ -1,9 +1,28 @@
 import React from 'react';
 import data from '../data/jawaban_latihan.json';
 import type { KalkulatorData } from '../types/finance';
+import { InlineMath } from 'react-katex';
 
 const DataDisplay: React.FC = () => {
   const problems = data.kalkulator_anuitas_data as unknown as KalkulatorData[];
+
+  const formatFormula = (formula: string) => {
+    // Basic conversion from regular text to LaTeX
+    // This is tailored to the formulas in the JSON
+    return formula
+      .replace(/PMT = /g, '\\text{PMT} = ')
+      .replace(/PV = /g, '\\text{PV} = ')
+      .replace(/FV = /g, '\\text{FV} = ')
+      .replace(/n = /g, 'n = ')
+      .replace(/\s\/\s/g, ' \\div ')
+      .replace(/\*/g, ' \\times ')
+      .replace(/\^/g, '^') // Katex handles ^ for superscripts
+      .replace(/\^-n/g, '^{-n}')
+      .replace(/\^n/g, '^{n}')
+      .replace(/PMT_due/g, '\\text{PMT}_{due}')
+      .replace(/PMT_ordinary/g, '\\text{PMT}_{ordinary}')
+      .replace(/log/g, '\\log');
+  };
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -40,9 +59,12 @@ const DataDisplay: React.FC = () => {
                 </span>
                 <span className="text-sm font-medium text-textPrimary/80">{problem.hasil.satuan}</span>
               </div>
-              <p className="text-xs text-textSecondary/60 mt-2 italic break-words">
-                Formula: {problem.rumus_digunakan}
-              </p>
+              <div className="mt-3 overflow-x-auto">
+                 <span className="text-xs text-textSecondary/60 block mb-1">Formula:</span>
+                 <div className="text-sm text-textPrimary/90 bg-white/5 p-2 rounded border border-white/5">
+                    <InlineMath math={formatFormula(problem.rumus_digunakan)} />
+                 </div>
+              </div>
             </div>
           </div>
         </div>

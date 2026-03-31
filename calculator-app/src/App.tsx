@@ -1,3 +1,5 @@
+import './App.css';
+import 'katex/dist/katex.min.css';
 import DataDisplay from './components/DataDisplay';
 import CalculatorTabs from './components/CalculatorTabs';
 import { Calculator } from 'lucide-react';
