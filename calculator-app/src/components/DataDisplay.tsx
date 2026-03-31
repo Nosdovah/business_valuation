@@ -1,49 +1,37 @@
 import React from 'react';
 import data from '../data/jawaban_latihan.json';
 import type { KalkulatorData } from '../types/finance';
-import { InlineMath } from 'react-katex';
 
 const DataDisplay: React.FC = () => {
   const problems = data.kalkulator_anuitas_data as unknown as KalkulatorData[];
 
-  const formatFormula = (formula: string) => {
-    if (!formula) return '';
+  const renderFormula = (formula: string) => {
+    if (!formula) return null;
     
-    // We use String.fromCharCode(92) to create a backslash dynamically
-    // This prevents the build process from ever seeing a literal backslash
-    // and incorrectly escaping it (e.g., turning \t into a tab).
-    const B = String.fromCharCode(92);
+    // Convert to standard math symbols
+    const formatted = formula
+      .replace(/\s\*\s/g, ' × ')
+      .replace(/\s\/\s/g, ' ÷ ')
+      .replace(/\*/g, ' × ')
+      .replace(/\//g, ' ÷ ');
+
+    // Match superscripts like ^n, ^-n, ^12
+    const parts = formatted.split(/(\^[-?\d\w]+)/g);
     
-    const replacements: Record<string, string> = {
-      'PMT_due': `${B}text{PMT}_{due}`,
-      'PMT_ordinary': `${B}text{PMT}_{ord}`,
-      'PMT': `${B}text{PMT}`,
-      'PV': `${B}text{PV}`,
-      'FV': `${B}text{FV}`,
-      'log': `${B}log`,
-      ' * ': ` ${B}times `,
-      ' / ': ` ${B}div `,
-      '*': ` ${B}times `,
-      '/': ` ${B}div `,
-      '^-n': '^{-n}',
-      '^n': '^{n}'
-    };
-
-    let result = formula;
-    
-    const markers: Record<string, string> = {};
-    Object.keys(replacements).sort((a, b) => b.length - a.length).forEach((key, idx) => {
-      const marker = `__MARKER_${idx}__`;
-      markers[marker] = replacements[key];
-      const regex = /^[a-zA-Z_]+$/.test(key) ? new RegExp(`\\b${key}\\b`, 'g') : new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
-      result = result.replace(regex, marker);
-    });
-
-    Object.keys(markers).forEach(marker => {
-      result = result.replace(new RegExp(marker, 'g'), markers[marker]);
-    });
-
-    return result;
+    return (
+      <span className="font-serif italic text-base tracking-wide flex flex-wrap items-center gap-0.5">
+        {parts.map((part, i) => {
+          if (part.startsWith('^')) {
+            return (
+              <sup key={i} className="text-[0.65em] font-bold not-italic translate-y-[-0.1em] inline-block">
+                {part.slice(1)}
+              </sup>
+            );
+          }
+          return <span key={i}>{part}</span>;
+        })}
+      </span>
+    );
   };
 
   return (
@@ -66,7 +54,9 @@ const DataDisplay: React.FC = () => {
               <div className="grid grid-cols-2 gap-2 text-sm">
                 {Object.entries(problem.input).map(([key, value]) => (
                   <div key={key} className="flex flex-col">
-                    <span className="text-textSecondary/70 truncate" title={key}>{key.replace(/_/g, ' ')}</span>
+                    <span className="text-textSecondary/70 truncate uppercase text-[10px]" title={key}>
+                      {key.replace(/_/g, ' ')}
+                    </span>
                     <span className="font-medium">{typeof value === 'number' ? value.toLocaleString('en-US') : value}</span>
                   </div>
                 ))}
@@ -74,7 +64,7 @@ const DataDisplay: React.FC = () => {
             </div>
 
             <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
-              <span className="text-xs text-primary uppercase tracking-wider font-semibold block mb-2">Result</span>
+              <span className="text-xs text-primary uppercase tracking-wider font-semibold block mb-2 font-accent">Result</span>
               <div className="flex items-baseline gap-2">
                 <span className="text-2xl font-bold gradient-text">
                   {problem.hasil.nilai.toLocaleString('en-US', { maximumFractionDigits: 2 })}
@@ -83,8 +73,8 @@ const DataDisplay: React.FC = () => {
               </div>
               <div className="mt-3 overflow-x-auto">
                  <span className="text-xs text-textSecondary/60 block mb-1">Formula:</span>
-                 <div className="text-sm text-textPrimary/90 bg-white/5 p-2 rounded border border-white/5">
-                    <InlineMath math={formatFormula(problem.rumus_digunakan)} />
+                 <div className="text-textPrimary/90 bg-white/5 p-3 rounded border border-white/5 min-h-[3rem] flex items-center">
+                    {renderFormula(problem.rumus_digunakan)}
                  </div>
               </div>
             </div>
