@@ -82,9 +82,9 @@ const DataDisplay: React.FC = () => {
                 <span className="text-sm font-medium text-textPrimary/80">{problem.hasil.satuan}</span>
               </div>
               <div className="mt-3 overflow-x-auto">
-                 <span className="text-xs text-textSecondary/60 block mb-1">Formula:</span>
-                 <div className="text-sm text-textPrimary/90 bg-white/5 p-2 rounded border border-white/5">
-                    <InlineMath math={formatFormula(problem.rumus_digunakan)} />
+                 <span className="text-xs text-textSecondary/60 block mb-1">Formula (Debug):</span>
+                 <div className="text-sm text-textPrimary/90 bg-white/5 p-2 rounded border border-white/5 font-mono">
+                    {formatFormula(problem.rumus_digunakan)}
                  </div>
               </div>
             </div>
