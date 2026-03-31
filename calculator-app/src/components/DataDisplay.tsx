@@ -6,6 +6,45 @@ import { InlineMath } from 'react-katex';
 const DataDisplay: React.FC = () => {
   const problems = data.kalkulator_anuitas_data as unknown as KalkulatorData[];
 
+  const formatFormula = (formula: string) => {
+    if (!formula) return '';
+    
+    // Sort keys by length descending to match most specific terms first
+    const replacements: Record<string, string> = {
+      'PMT_due': '\\text{PMT}_{due}',
+      'PMT_ordinary': '\\text{PMT}_{ord}',
+      'PMT': '\\text{PMT}',
+      'PV': '\\text{PV}',
+      'FV': '\\text{FV}',
+      'log': '\\log',
+      ' * ': ' \\times ',
+      ' / ': ' \\div ',
+      '*': ' \\times ',
+      '/': ' \\div ',
+      '^-n': '^{-n}',
+      '^n': '^{n}'
+    };
+
+    let result = formula;
+    
+    // Use markers to prevent double-replacement
+    const markers: Record<string, string> = {};
+    Object.keys(replacements).sort((a, b) => b.length - a.length).forEach((key, idx) => {
+      const marker = `__MS_${idx}__`;
+      markers[marker] = replacements[key];
+      const regex = /^[a-zA-Z_]+$/.test(key) ? new RegExp(`\\b${key}\\b`, 'g') : new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      result = result.replace(regex, marker);
+    });
+
+    // Replace markers with LaTeX equivalents, including the backslash.
+    // This is the last step before rendering, which is more stable.
+    Object.keys(markers).forEach(marker => {
+      result = result.replace(new RegExp(marker, 'g'), markers[marker]);
+    });
+
+    return result;
+  };
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {problems.map((problem) => (
@@ -44,7 +83,7 @@ const DataDisplay: React.FC = () => {
               <div className="mt-3 overflow-x-auto">
                  <span className="text-xs text-textSecondary/60 block mb-1">Formula:</span>
                  <div className="text-sm text-textPrimary/90 bg-white/5 p-2 rounded border border-white/5">
-                    <InlineMath math={problem.rumus_latex} />
+                    <InlineMath math={formatFormula(problem.rumus_digunakan)} />
                  </div>
               </div>
             </div>

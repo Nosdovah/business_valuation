@@ -4,7 +4,6 @@ export interface KalkulatorData {
   deskripsi: string;
   input: Record<string, number | string>;
   rumus_digunakan: string;
-  rumus_latex: string;
   hasil: {
     nilai: number;
     satuan: string;
