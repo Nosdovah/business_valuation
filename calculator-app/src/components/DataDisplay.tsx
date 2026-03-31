@@ -6,42 +6,6 @@ import { InlineMath } from 'react-katex';
 const DataDisplay: React.FC = () => {
   const problems = data.kalkulator_anuitas_data as unknown as KalkulatorData[];
 
-  const formatFormula = (formula: string) => {
-    if (!formula) return '';
-    
-    // Triple backslash is the "nuclear option" for Vite/Vercel production
-    // It ensures at least one backslash survives minification safely
-    const replacements: [RegExp, string][] = [
-      [/\bPMT_due\b/g, '\\\\\\text{PMT}_{due}'],
-      [/\bPMT_ordinary\b/g, '\\\\\\text{PMT}_{ord}'],
-      [/\bPMT\b/g, '\\\\\\text{PMT}'],
-      [/\bPV\b/g, '\\\\\\text{PV}'],
-      [/\bFV\b/g, '\\\\\\text{FV}'],
-      [/\blog\b/g, '\\\\\\log'],
-      [/\s\/\s/g, ' \\\\\\div '],
-      [/\s\*\s/g, ' \\\\\\times '],
-      [/\^-n/g, '^{-n}'],
-      [/\^n/g, '^{n}'],
-      [/(?<!\\)\//g, ' \\\\\\div '],
-      [/(?<!\\)\*/g, ' \\\\\\times ']
-    ];
-
-    let result = formula;
-    const markers: string[] = [];
-    
-    replacements.forEach(([regex, latex], idx) => {
-      const marker = `##MARKER${idx}##`;
-      markers[idx] = latex;
-      result = result.replace(regex, marker);
-    });
-
-    markers.forEach((latex, idx) => {
-      result = result.replace(new RegExp(`##MARKER${idx}##`, 'g'), latex);
-    });
-
-    return result;
-  };
-
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       {problems.map((problem) => (
@@ -80,7 +44,7 @@ const DataDisplay: React.FC = () => {
               <div className="mt-3 overflow-x-auto">
                  <span className="text-xs text-textSecondary/60 block mb-1">Formula:</span>
                  <div className="text-sm text-textPrimary/90 bg-white/5 p-2 rounded border border-white/5">
-                    <InlineMath math={formatFormula(problem.rumus_digunakan)} />
+                    <InlineMath math={problem.rumus_latex} />
                  </div>
               </div>
             </div>
