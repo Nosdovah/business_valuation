@@ -15,7 +15,7 @@ Sangat cocok digunakan sebagai referensi cepat bagi mahasiswa bisnis, profesiona
 * **Arsitektur Berbasis Data:** Menggunakan struktur data JSON terpusat untuk memisahkan logika rumus dari antarmuka pengguna (UI).
 
 ## 🛠️ Teknologi yang Digunakan
-* **Frontend:** HTML5, CSS3, JavaScript (ES6+)
+* **Frontend:** HTML5, CSS3, JavaScript (ES6+), TypScript, Tailwind CSS
 * **Library Matematika (Opsional):** [Math.js](https://mathjs.org/) untuk menangani perhitungan eksponensial dan logaritma yang presisi.
 * **Struktur Data:** JSON
 
