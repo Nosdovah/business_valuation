@@ -57,7 +57,13 @@ const DataDisplay: React.FC = () => {
                     <span className="text-textSecondary/70 truncate uppercase text-[10px]" title={key}>
                       {key.replace(/_/g, ' ')}
                     </span>
-                    <span className="font-medium">{typeof value === 'number' ? value.toLocaleString('en-US') : value}</span>
+                    <span className="font-medium">
+                      {typeof value === 'number' 
+                        ? (key.toLowerCase().includes('bunga') || key.toLowerCase().includes('rate') || key.toLowerCase().includes('interest')
+                           ? `${(value * 100).toLocaleString('en-US', { maximumFractionDigits: 4 })}%`
+                           : value.toLocaleString('en-US'))
+                        : value}
+                    </span>
                   </div>
                 ))}
               </div>
