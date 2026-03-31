@@ -8,24 +8,26 @@ const DataDisplay: React.FC = () => {
 
   const formatFormula = (formula: string) => {
     if (!formula) return '';
-    // Double escape backslashes for JS strings to survive production builds
     let latex = formula;
     
-    // Replace terms first
-    latex = latex.replace(/PMT_due/g, '\\\\text{PMT}_{due}');
-    latex = latex.replace(/PMT_ordinary/g, '\\\\text{PMT}_{ord}');
-    latex = latex.replace(/PMT/g, '\\\\text{PMT}');
-    latex = latex.replace(/PV/g, '\\\\text{PV}');
-    latex = latex.replace(/FV/g, '\\\\text{FV}');
-    latex = latex.replace(/log/g, '\\\\log');
+    // 1. Specific terms first (with word boundaries to avoid double-replacing)
+    latex = latex.replace(/\bPMT_due\b/g, '\\\\text{PMT}_{due}');
+    latex = latex.replace(/\bPMT_ordinary\b/g, '\\\\text{PMT}_{ord}');
+    latex = latex.replace(/\bPMT\b/g, '\\\\text{PMT}');
+    latex = latex.replace(/\bPV\b/g, '\\\\text{PV}');
+    latex = latex.replace(/\bFV\b/g, '\\\\text{FV}');
+    latex = latex.replace(/\blog\b/g, '\\\\log');
 
-    // Handle symbols
+    // 2. Mathematical symbols
     latex = latex.replace(/\s\/\s/g, ' \\\\div ');
     latex = latex.replace(/\s\*\s/g, ' \\\\times ');
-    latex = latex.replace(/\//g, ' \\\\div ');
-    latex = latex.replace(/\*/g, ' \\\\times ');
+    
+    // 3. Lone symbols (non-word boundary replacements)
+    // Make sure we don't accidentally replace part of a latex command
+    latex = latex.replace(/(?<!\\)\//g, ' \\\\div ');
+    latex = latex.replace(/(?<!\\)\*/g, ' \\\\times ');
 
-    // Handle powers
+    // 4. Superscripts
     latex = latex.replace(/\^-n/g, '^{-n}');
     latex = latex.replace(/\^n/g, '^{n}');
 
