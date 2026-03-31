@@ -19,19 +19,6 @@ Sangat cocok digunakan sebagai referensi cepat bagi mahasiswa bisnis, profesiona
 * **Library Matematika (Opsional):** [Math.js](https://mathjs.org/) untuk menangani perhitungan eksponensial dan logaritma yang presisi.
 * **Struktur Data:** JSON
 
-## 🚀 Instalasi & Penggunaan Cepat
-
-1.  **Clone repositori ini:**
-    ```bash
-    git clone [https://github.com/username-kamu/kalkulator-finansial.git](https://github.com/username-kamu/kalkulator-finansial.git)
-    ```
-2.  **Buka direktori proyek:**
-    ```bash
-    cd kalkulator-finansial
-    ```
-3.  **Jalankan aplikasi:**
-    Cukup buka file `index.html` di browser pilihanmu. Tidak memerlukan instalasi server khusus (dapat berjalan statis).
-
 ## 📂 Struktur Data (JSON)
 Logika soal dan perhitungan di *backend* menggunakan format JSON agar mudah dikembangkan dan diintegrasikan. Contoh struktur:
 
