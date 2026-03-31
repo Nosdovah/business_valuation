@@ -9,35 +9,36 @@ const DataDisplay: React.FC = () => {
   const formatFormula = (formula: string) => {
     if (!formula) return '';
     
-    // Sort keys by length descending to match most specific terms first
+    // We use String.fromCharCode(92) to create a backslash dynamically
+    // This prevents the build process from ever seeing a literal backslash
+    // and incorrectly escaping it (e.g., turning \t into a tab).
+    const B = String.fromCharCode(92);
+    
     const replacements: Record<string, string> = {
-      'PMT_due': '\\text{PMT}_{due}',
-      'PMT_ordinary': '\\text{PMT}_{ord}',
-      'PMT': '\\text{PMT}',
-      'PV': '\\text{PV}',
-      'FV': '\\text{FV}',
-      'log': '\\log',
-      ' * ': ' \\times ',
-      ' / ': ' \\div ',
-      '*': ' \\times ',
-      '/': ' \\div ',
+      'PMT_due': `${B}text{PMT}_{due}`,
+      'PMT_ordinary': `${B}text{PMT}_{ord}`,
+      'PMT': `${B}text{PMT}`,
+      'PV': `${B}text{PV}`,
+      'FV': `${B}text{FV}`,
+      'log': `${B}log`,
+      ' * ': ` ${B}times `,
+      ' / ': ` ${B}div `,
+      '*': ` ${B}times `,
+      '/': ` ${B}div `,
       '^-n': '^{-n}',
       '^n': '^{n}'
     };
 
     let result = formula;
     
-    // Use markers to prevent double-replacement
     const markers: Record<string, string> = {};
     Object.keys(replacements).sort((a, b) => b.length - a.length).forEach((key, idx) => {
-      const marker = `__MS_${idx}__`;
+      const marker = `__MARKER_${idx}__`;
       markers[marker] = replacements[key];
       const regex = /^[a-zA-Z_]+$/.test(key) ? new RegExp(`\\b${key}\\b`, 'g') : new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
       result = result.replace(regex, marker);
     });
 
-    // Replace markers with LaTeX equivalents, including the backslash.
-    // This is the last step before rendering, which is more stable.
     Object.keys(markers).forEach(marker => {
       result = result.replace(new RegExp(marker, 'g'), markers[marker]);
     });
