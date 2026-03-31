@@ -8,30 +8,42 @@ const DataDisplay: React.FC = () => {
 
   const formatFormula = (formula: string) => {
     if (!formula) return '';
-    let latex = formula;
     
-    // 1. Specific terms first (with word boundaries to avoid double-replacing)
-    latex = latex.replace(/\bPMT_due\b/g, '\\\\text{PMT}_{due}');
-    latex = latex.replace(/\bPMT_ordinary\b/g, '\\\\text{PMT}_{ord}');
-    latex = latex.replace(/\bPMT\b/g, '\\\\text{PMT}');
-    latex = latex.replace(/\bPV\b/g, '\\\\text{PV}');
-    latex = latex.replace(/\bFV\b/g, '\\\\text{FV}');
-    latex = latex.replace(/\blog\b/g, '\\\\log');
+    // Sort keys by length descending to match most specific terms first
+    const replacements: Record<string, string> = {
+      'PMT_due': '\\\\text{PMT}_{due}',
+      'PMT_ordinary': '\\\\text{PMT}_{ord}',
+      'PMT': '\\\\text{PMT}',
+      'PV': '\\\\text{PV}',
+      'FV': '\\\\text{FV}',
+      'log': '\\\\log',
+      ' * ': ' \\\\times ',
+      ' / ': ' \\\\div ',
+      '*': ' \\\\times ',
+      '/': ' \\\\div ',
+      '^-n': '^{-n}',
+      '^n': '^{n}'
+    };
 
-    // 2. Mathematical symbols
-    latex = latex.replace(/\s\/\s/g, ' \\\\div ');
-    latex = latex.replace(/\s\*\s/g, ' \\\\times ');
+    let result = formula;
     
-    // 3. Lone symbols (non-word boundary replacements)
-    // Make sure we don't accidentally replace part of a latex command
-    latex = latex.replace(/(?<!\\)\//g, ' \\\\div ');
-    latex = latex.replace(/(?<!\\)\*/g, ' \\\\times ');
+    // 1. First, temporarily replace symbols and specific terms with unique markers
+    // to prevent double-replacement during subsequent passes.
+    const markers: Record<string, string> = {};
+    Object.keys(replacements).sort((a, b) => b.length - a.length).forEach((key, idx) => {
+      const marker = `__MARKER_${idx}__`;
+      markers[marker] = replacements[key];
+      // Use regex with boundaries for words, literal search for symbols
+      const regex = /^[a-zA-Z_]+$/.test(key) ? new RegExp(`\\b${key}\\b`, 'g') : new RegExp(key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+      result = result.replace(regex, marker);
+    });
 
-    // 4. Superscripts
-    latex = latex.replace(/\^-n/g, '^{-n}');
-    latex = latex.replace(/\^n/g, '^{n}');
+    // 2. Finally, swap markers for their LaTeX equivalents
+    Object.keys(markers).forEach(marker => {
+      result = result.replace(new RegExp(marker, 'g'), markers[marker]);
+    });
 
-    return latex;
+    return result;
   };
 
   return (
