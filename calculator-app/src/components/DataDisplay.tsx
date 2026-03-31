@@ -8,22 +8,28 @@ const DataDisplay: React.FC = () => {
 
   const formatFormula = (formula: string) => {
     if (!formula) return '';
-    // Basic conversion from regular text to LaTeX
-    // This is tailored to the formulas in the JSON
-    return formula
-      .replace(/PMT = /g, '\\text{PMT} = ')
-      .replace(/PV = /g, '\\text{PV} = ')
-      .replace(/FV = /g, '\\text{FV} = ')
-      .replace(/n = /g, 'n = ')
-      .replace(/\s\/\s/g, ' \\div ')
-      .replace(/\s\*\s/g, ' \\times ')
-      .replace(/\^-n/g, '^{-n}') // Specific for ordinary annuity
-      .replace(/\^n/g, '^{n}')   // Specific for (1+i)^n
-      .replace(/\//g, ' \\div ')
-      .replace(/\*/g, ' \\times ')
-      .replace(/PMT_due/g, '\\text{PMT}_{due}')
-      .replace(/PMT_ordinary/g, '\\text{PMT}_{ord}')
-      .replace(/log/g, '\\log');
+    // Use clear placeholders to avoid partial string replacements
+    let latex = formula;
+    
+    // Replace terms first
+    latex = latex.replace(/PMT_due/g, '\\text{PMT}_{due}');
+    latex = latex.replace(/PMT_ordinary/g, '\\text{PMT}_{ord}');
+    latex = latex.replace(/PMT/g, '\\text{PMT}');
+    latex = latex.replace(/PV/g, '\\text{PV}');
+    latex = latex.replace(/FV/g, '\\text{FV}');
+    latex = latex.replace(/log/g, '\\log');
+
+    // Handle symbols
+    latex = latex.replace(/\s\/\s/g, ' \\div ');
+    latex = latex.replace(/\s\*\s/g, ' \\times ');
+    latex = latex.replace(/\//g, ' \\div ');
+    latex = latex.replace(/\*/g, ' \\times ');
+
+    // Handle powers - do these last to prevent grouping issues
+    latex = latex.replace(/\^-n/g, '^{-n}');
+    latex = latex.replace(/\^n/g, '^{n}');
+
+    return latex;
   };
 
   return (
