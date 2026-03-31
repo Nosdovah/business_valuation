@@ -9,33 +9,32 @@ const DataDisplay: React.FC = () => {
   const formatFormula = (formula: string) => {
     if (!formula) return '';
     
-    // Define exact replacements to prevent double-wrapping
+    // Triple backslash is the "nuclear option" for Vite/Vercel production
+    // It ensures at least one backslash survives minification safely
     const replacements: [RegExp, string][] = [
-      [/\bPMT_due\b/g, '\\text{PMT}_{due}'],
-      [/\bPMT_ordinary\b/g, '\\text{PMT}_{ord}'],
-      [/\bPMT\b/g, '\\text{PMT}'],
-      [/\bPV\b/g, '\\text{PV}'],
-      [/\bFV\b/g, '\\text{FV}'],
-      [/\blog\b/g, '\\log'],
-      [/\s\/\s/g, ' \\div '],
-      [/\s\*\s/g, ' \\times '],
+      [/\bPMT_due\b/g, '\\\\\\text{PMT}_{due}'],
+      [/\bPMT_ordinary\b/g, '\\\\\\text{PMT}_{ord}'],
+      [/\bPMT\b/g, '\\\\\\text{PMT}'],
+      [/\bPV\b/g, '\\\\\\text{PV}'],
+      [/\bFV\b/g, '\\\\\\text{FV}'],
+      [/\blog\b/g, '\\\\\\log'],
+      [/\s\/\s/g, ' \\\\\\div '],
+      [/\s\*\s/g, ' \\\\\\times '],
       [/\^-n/g, '^{-n}'],
       [/\^n/g, '^{n}'],
-      [/(?<!\\)\//g, ' \\div '],
-      [/(?<!\\)\*/g, ' \\times ']
+      [/(?<!\\)\//g, ' \\\\\\div '],
+      [/(?<!\\)\*/g, ' \\\\\\times ']
     ];
 
     let result = formula;
-    
-    // We use a temporary placeholder to prevent double-replacements
     const markers: string[] = [];
+    
     replacements.forEach(([regex, latex], idx) => {
       const marker = `##MARKER${idx}##`;
       markers[idx] = latex;
       result = result.replace(regex, marker);
     });
 
-    // Final pass to put the LaTeX in
     markers.forEach((latex, idx) => {
       result = result.replace(new RegExp(`##MARKER${idx}##`, 'g'), latex);
     });
@@ -48,8 +47,8 @@ const DataDisplay: React.FC = () => {
       {problems.map((problem) => (
         <div key={problem.id} className="glass-card p-6 flex flex-col h-full transform transition hover:-translate-y-1 hover:shadow-2xl hover:border-white/20">
           <div className="mb-4">
-            <span className="inline-block px-3 py-1 bg-primary/20 text-primary text-xs font-semibold rounded-full mb-2">
-              {problem.id.toUpperCase()}
+            <span className="inline-block px-3 py-1 bg-primary/20 text-primary text-xs font-semibold rounded-full mb-2 uppercase">
+              {problem.id.replace(/_/g, ' ')}
             </span>
             <h3 className="text-lg font-semibold text-textPrimary leading-tight">{problem.tipe_kalkulasi}</h3>
           </div>

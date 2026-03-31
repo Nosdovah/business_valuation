@@ -98,7 +98,7 @@
                 "payment_pmt": 12000000,
                 "periode_n": 12
             },
-            "rumus_digunakan": "Pencarian numerik iteratif untuk i pada persamaan: PV = PMT * ((1 - (1 + i)^-n) / i)",
+            "rumus_digunakan": "PV = PMT * ((1 - (1 + i)^-n) / i)",
             "hasil": {
                 "nilai": 0.0611,
                 "satuan": "Desimal (6.11%)"
