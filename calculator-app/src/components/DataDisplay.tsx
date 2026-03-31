@@ -1,7 +1,6 @@
 import React from 'react';
 import data from '../data/jawaban_latihan.json';
 import type { KalkulatorData } from '../types/finance';
-import { InlineMath } from 'react-katex';
 
 const DataDisplay: React.FC = () => {
   const problems = data.kalkulator_anuitas_data as unknown as KalkulatorData[];
