@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-background text-textPrimary font-sans antialiased min-h-screen relative overflow-x-hidden;
+    @apply bg-background text-textPrimary font-sans antialiased min-h-screen relative overflow-x-hidden p-0 m-0;
   }
 }
 
@@ -41,16 +41,27 @@
 
 .bg-blobs::before {
   background: #3b82f6;
-  width: 400px;
-  height: 400px;
+  width: min(80vw, 400px);
+  height: min(80vw, 400px);
   top: -100px;
   left: -100px;
 }
 
 .bg-blobs::after {
   background: #8b5cf6;
-  width: 300px;
-  height: 300px;
+  width: min(70vw, 300px);
+  height: min(70vw, 300px);
   bottom: 10%;
   right: -50px;
+}
+
+/* Custom scrollbar for mobile formula viewing */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 4px;
+}
+.overflow-x-auto::-webkit-scrollbar-track {
+  @apply bg-white/5 rounded-full;
+}
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  @apply bg-primary/30 rounded-full;
 }
