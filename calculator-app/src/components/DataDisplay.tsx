@@ -34,6 +34,33 @@ const DataDisplay: React.FC = () => {
     );
   };
 
+  const formatStep = (step: string) => {
+    // Convert to standard math symbols
+    const formatted = step
+      .replace(/\s\*\s/g, ' × ')
+      .replace(/\s\/\s/g, ' ÷ ')
+      .replace(/\*/g, ' × ')
+      .replace(/\//g, ' ÷ ');
+
+    // Match superscripts like ^n, ^-n, ^12, ^-12
+    const parts = formatted.split(/(\^[-?\d\w]+)/g);
+    
+    return (
+      <span className="font-serif italic tracking-wide flex flex-wrap items-center gap-0.5">
+        {parts.map((part, i) => {
+          if (part.startsWith('^')) {
+            return (
+              <sup key={i} className="text-[0.65em] font-bold not-italic translate-y-[-0.1em] inline-block">
+                {part.slice(1)}
+              </sup>
+            );
+          }
+          return <span key={i}>{part}</span>;
+        })}
+      </span>
+    );
+  };
+
   const renderSteps = (problem: KalkulatorData) => {
     const { id, input, hasil } = problem;
     const steps: string[] = [];
@@ -122,17 +149,19 @@ const DataDisplay: React.FC = () => {
     steps.push(`Final: ${fCur(hasil.nilai)} ${hasil.satuan}`);
 
     return (
-      <div className="space-y-2 mt-2">
+      <div className="space-y-4 mt-2">
         {steps.map((step, index) => (
           <div 
             key={index} 
-            className="flex items-center gap-3 text-[10px] font-mono text-textSecondary/80 animate-fade-in opacity-0"
+            className="flex items-start gap-3 text-sm md:text-base text-textPrimary/90 animate-fade-in opacity-0"
             style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'forwards' }}
           >
-            <span className="flex-none w-4 h-4 rounded-full bg-primary/10 flex items-center justify-center text-[9px] font-bold text-primary border border-primary/20">
+            <span className="mt-1 flex-none w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary border border-primary/30">
               {index + 1}
             </span>
-            <span className="truncate" title={step}>{step}</span>
+            <div className="flex-grow overflow-hidden">
+               {formatStep(step)}
+            </div>
           </div>
         ))}
       </div>
@@ -149,7 +178,7 @@ const DataDisplay: React.FC = () => {
             </span>
             <h3 className="text-lg font-semibold text-textPrimary leading-tight">{problem.tipe_kalkulasi}</h3>
           </div>
-          <p className="text-textSecondary text-sm flex-grow mb-6">
+          <p className="text-textSecondary text-sm mb-6">
             {problem.deskripsi}
           </p>
           
