@@ -36,12 +36,12 @@
             "deskripsi": "Menghitung cicilan pinjaman yang dibayar di AKHIR bulan.",
             "input": {
                 "present_value_pv": 50000,
-                "suku_bunga_i_bulanan": 0.009167,
+                "suku_bunga_i_bulanan": 0.11,
                 "periode_n_bulan": 300
             },
             "rumus_digunakan": "PMT = PV / ((1 - (1 + i)^-n) / i)",
             "hasil": {
-                "nilai": 490.03,
+                "nilai": 5500,
                 "satuan": "USD / bulan"
             }
         },
@@ -50,12 +50,12 @@
             "tipe_kalkulasi": "Cari PMT (Annuity Due)",
             "deskripsi": "Menghitung cicilan pinjaman yang dibayar di AWAL bulan.",
             "input": {
-                "pmt_ordinary": 490.03,
-                "suku_bunga_i_bulanan": 0.009167
+                "pmt_ordinary": 5500,
+                "suku_bunga_i_bulanan": 0.11
             },
             "rumus_digunakan": "PMT_due = PMT_ordinary / (1 + i)",
             "hasil": {
-                "nilai": 485.58,
+                "nilai": 4954.95,
                 "satuan": "USD / bulan"
             }
         },

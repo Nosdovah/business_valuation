@@ -14,10 +14,24 @@ const CalculatorTabs: React.FC = () => {
   const [result, setResult] = useState<number | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    let value = e.target.value;
+    
+    // Safety check for negative values (though handleKeyDown should prevent them)
+    if (value && parseFloat(value) < 0) {
+      value = '0';
+    }
+
+    setInputs(prev => ({ ...prev, [e.target.name]: value }));
     // Clear states when input changes
     if (result !== null) setResult(null);
     if (error) setError(false);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Prevent negative sign and scientific notation
+    if (e.key === '-' || e.key === 'e' || e.key === 'E') {
+      e.preventDefault();
+    }
   };
 
   const parseNumber = (val: string) => parseFloat(val) || 0;
@@ -95,8 +109,11 @@ const CalculatorTabs: React.FC = () => {
           <input
             type="number"
             name={name}
+            min="0"
+            step="any"
             value={inputs[name] || ''}
             onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
             placeholder={placeholder}
             className={`glass-input w-full ${unit ? 'pr-12' : ''} ${isError ? 'border-red-500/50 bg-red-500/5 ring-1 ring-red-500/20' : ''}`}
           />
