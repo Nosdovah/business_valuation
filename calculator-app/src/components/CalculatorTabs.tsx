@@ -228,7 +228,7 @@ const CalculatorTabs: React.FC = () => {
               {result === Infinity ? 'Infinite' : (isNaN(result) ? 'Error' : result.toLocaleString('en-US', { maximumFractionDigits: 4 }))}
             </span>
             <span className="text-xs text-textSecondary mt-2 opacity-70">
-              {activeTab === 'Rate (i)' ? '% per period' : 'USD'}
+              {activeTab === 'Rate (i)' ? '% per period' : (activeTab === 'Period (n)' ? 'Periods' : 'USD')}
             </span>
           </div>
         )}
