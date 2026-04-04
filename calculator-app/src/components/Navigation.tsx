@@ -8,7 +8,7 @@ interface NavigationProps {
 const Navigation = ({ activeTab, setActiveTab }: NavigationProps) => {
   const tabs = [
     { id: 'calculator', label: 'Calculator', icon: Calculator },
-    { id: 'case-studies', label: 'Case Studies', icon: BarChart3 },
+    { id: 'case-studies', label: 'Exercise 2', icon: BarChart3 },
     { id: 'exercise-1', label: 'Exercise 1', icon: BarChart3 },
     { id: 'custom', label: 'Customized Case Studies', icon: FolderGit2 },
   ] as const;

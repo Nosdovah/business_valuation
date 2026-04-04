@@ -87,26 +87,26 @@ const Latihan1Display: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {soal_jawaban.map((soal) => (
                     <div key={soal.nomor} className="glass-card p-6 flex flex-col h-full transform transition hover:-translate-y-1 hover:shadow-2xl hover:border-white/20">
-                        <div className="mb-4 flex items-center justify-between">
-                            <span className="inline-flex w-8 h-8 items-center justify-center bg-primary/20 text-primary text-sm font-bold rounded-full mb-2">
-                                {soal.nomor}
+                        <div className="mb-4">
+                            <span className="inline-block px-3 py-1 bg-primary/20 text-primary text-xs font-semibold rounded-full mb-2 uppercase">
+                                Soal {soal.nomor}
                             </span>
+                            <h3 className="text-lg font-semibold text-textPrimary leading-tight">Exercise Case Study {soal.nomor}</h3>
                         </div>
-                        <p className="text-textPrimary leading-relaxed text-sm md:text-base font-medium mb-6 flex-grow">
+                        <p className="text-textSecondary text-sm mb-6 flex-grow">
                             {soal.deskripsi}
                         </p>
 
-                        <div className="space-y-4 mt-auto">
-                            {/* Input Parameters Box */}
-                            <div className="bg-black/30 rounded-lg p-4 border border-white/5">
-                                <span className="text-[10px] text-textSecondary uppercase tracking-widest font-bold block mb-3 opacity-80">Input Parameters</span>
-                                <div className="grid grid-cols-2 gap-3 text-sm">
+                        <div className="space-y-4">
+                            <div className="bg-black/30 rounded-lg p-3 border border-white/5">
+                                <span className="text-xs text-textSecondary uppercase tracking-wider font-semibold block mb-2">Input Parameters</span>
+                                <div className="grid grid-cols-2 gap-2 text-sm">
                                     {Object.entries(soal.input).map(([key, value]) => (
                                         <div key={key} className="flex flex-col">
-                                            <span className="text-textSecondary/70 truncate capitalize text-xs tracking-wide" title={key}>
+                                            <span className="text-textSecondary/70 truncate uppercase text-[10px]" title={key}>
                                                 {key.replace(/_/g, ' ')}
                                             </span>
-                                            <span className="font-semibold text-white/90">
+                                            <span className="font-medium">
                                                 {Array.isArray(value) ? (
                                                     value.map(v => typeof v === 'number' && v < 1 && v > 0 ? `${v * 100}%` : v).join(', ')
                                                 ) : typeof value === 'number'
@@ -122,19 +122,15 @@ const Latihan1Display: React.FC = () => {
                                 </div>
                             </div>
 
-                            {/* Result Box */}
-                            <div className="bg-primary/10 rounded-lg p-4 border border-primary/20 relative overflow-hidden group">
-                                <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none group-hover:opacity-10 transition-opacity">
-                                    <div className="w-16 h-16 rounded-full bg-primary/50 blur-xl"></div>
-                                </div>
-                                <span className="text-[10px] text-primary uppercase tracking-widest font-bold block mb-3 flex-shrink-0">Result</span>
+                            <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
+                                <span className="text-xs text-primary uppercase tracking-wider font-semibold block mb-2 font-accent">Result</span>
 
                                 {renderResult(soal)}
 
                                 {soal.rumus && (
-                                    <div className="mt-4 pt-4 border-t border-primary/10">
-                                        <span className="text-[10px] text-primary/60 uppercase tracking-widest font-bold block mb-2">Formula Used</span>
-                                        <div className="text-primary/90 bg-black/20 p-3 rounded-lg border border-primary/10 min-h-[3rem] flex items-center justify-center font-mono">
+                                    <div className="mt-3 overflow-x-auto">
+                                        <span className="text-xs text-textSecondary/60 block mb-1">Formula:</span>
+                                        <div className="text-textPrimary/90 bg-white/5 p-3 rounded border border-white/5 min-h-[3rem] flex items-center">
                                             {renderFormula(soal.rumus)}
                                         </div>
                                     </div>
