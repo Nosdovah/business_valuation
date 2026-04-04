@@ -1,14 +1,15 @@
 import { Calculator, BarChart3, FolderGit2 } from 'lucide-react';
 
 interface NavigationProps {
-  activeTab: 'calculator' | 'case-studies' | 'custom';
-  setActiveTab: (tab: 'calculator' | 'case-studies' | 'custom') => void;
+  activeTab: 'calculator' | 'case-studies' | 'custom' | 'exercise-1';
+  setActiveTab: (tab: 'calculator' | 'case-studies' | 'custom' | 'exercise-1') => void;
 }
 
 const Navigation = ({ activeTab, setActiveTab }: NavigationProps) => {
   const tabs = [
     { id: 'calculator', label: 'Calculator', icon: Calculator },
     { id: 'case-studies', label: 'Case Studies', icon: BarChart3 },
+    { id: 'exercise-1', label: 'Exercise 1', icon: BarChart3 },
     { id: 'custom', label: 'Customized Case Studies', icon: FolderGit2 },
   ] as const;
 

@@ -5,10 +5,11 @@ import DataDisplay from './components/DataDisplay';
 import CalculatorTabs from './components/CalculatorTabs';
 import Navigation from './components/Navigation';
 import CustomCaseStudies from './components/CustomCaseStudies';
+import Latihan1Display from './components/Latihan1Display';
 import { Calculator } from 'lucide-react';
 
 function App() {
-  const [activeTab, setActiveTab] = useState<'calculator' | 'case-studies' | 'custom'>('calculator');
+  const [activeTab, setActiveTab] = useState<'calculator' | 'case-studies' | 'custom' | 'exercise-1'>('calculator');
 
   return (
     <div className="min-h-screen relative flex flex-col">
@@ -44,6 +45,16 @@ function App() {
               Case Studies
             </h2>
             <DataDisplay />
+          </div>
+        )}
+
+        {activeTab === 'exercise-1' && (
+          <div className="w-full xl:w-[1000px] space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+              <span className="w-8 h-1 bg-gradient-to-r from-primary to-secondary rounded-full inline-block"></span>
+              Exercise 1
+            </h2>
+            <Latihan1Display />
           </div>
         )}
 

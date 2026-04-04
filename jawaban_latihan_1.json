@@ -1,0 +1,106 @@
+{
+    "latihan_nilai_waktu_uang": {
+        "mata_kuliah": "Digital Business / Finance",
+        "topik": "Future Value & Present Value",
+        "jumlah_soal": 7,
+        "soal_jawaban": [
+            {
+                "nomor": 1,
+                "deskripsi": "Menghitung Future Value (FV) dengan variasi suku bunga.",
+                "input": {
+                    "cash_flow": 2000,
+                    "unit_mata_uang": "USD",
+                    "periode_tahun": 5,
+                    "suku_bunga_list": [
+                        0.04,
+                        0.06,
+                        0.20
+                    ]
+                },
+                "rumus": "FV = CF * (1 + r)^n",
+                "hasil_per_rate": {
+                    "rate_4_persen": 2433.30,
+                    "rate_6_persen": 2676.46,
+                    "rate_20_persen": 4976.64
+                }
+            },
+            {
+                "nomor": 2,
+                "deskripsi": "Menghitung FV untuk nilai investasi besar selama 10 tahun.",
+                "input": {
+                    "cash_flow": 100000000,
+                    "unit_mata_uang": "IDR",
+                    "suku_bunga": 0.08,
+                    "periode_tahun": 10
+                },
+                "rumus": "FV = CF * (1 + r)^n",
+                "hasil": 215892500.00
+            },
+            {
+                "nomor": 3,
+                "deskripsi": "Menghitung Present Value (PV) dari nilai masa depan.",
+                "input": {
+                    "future_value": 10000,
+                    "unit_mata_uang": "USD",
+                    "periode_tahun": 8,
+                    "suku_bunga_list": [
+                        0.05,
+                        0.20
+                    ]
+                },
+                "rumus": "PV = FV / (1 + r)^n",
+                "hasil_per_rate": {
+                    "rate_5_persen": 6768.39,
+                    "rate_20_persen": 2325.68
+                }
+            },
+            {
+                "nomor": 4,
+                "deskripsi": "Menghitung PV untuk instrumen Obligasi.",
+                "input": {
+                    "future_value": 2249.73,
+                    "unit_mata_uang": "USD",
+                    "suku_bunga": 0.04,
+                    "periode_tahun": 3
+                },
+                "rumus": "PV = FV / (1 + r)^n",
+                "hasil": 2000.00
+            },
+            {
+                "nomor": 5,
+                "deskripsi": "Mencari periode waktu (n) untuk pelipatan nilai 4x lipat.",
+                "input": {
+                    "target_multiplier": 4,
+                    "suku_bunga": 0.09
+                },
+                "rumus": "n = ln(FV/CF) / ln(1 + r)",
+                "hasil_tahun": 16.086,
+                "konversi_waktu": "16 tahun, 1 bulan, 1 hari"
+            },
+            {
+                "nomor": 6,
+                "deskripsi": "Mencari suku bunga (i) dari pertumbuhan pinjaman.",
+                "input": {
+                    "present_value": 1000,
+                    "future_value": 1838.50,
+                    "periode_tahun": 9
+                },
+                "rumus": "r = (FV/PV)^(1/n) - 1",
+                "hasil_decimal": 0.07,
+                "hasil_persentase": "7%"
+            },
+            {
+                "nomor": 7,
+                "deskripsi": "Mencari tingkat pertumbuhan (i) nilai saham.",
+                "input": {
+                    "nilai_awal": 1.00,
+                    "nilai_akhir": 1.99,
+                    "periode_tahun": 8
+                },
+                "rumus": "r = (FV/PV)^(1/n) - 1",
+                "hasil_decimal": 0.089,
+                "hasil_persentase": "8.9%"
+            }
+        ]
+    }
+}
