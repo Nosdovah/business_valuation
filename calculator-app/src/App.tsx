@@ -38,16 +38,6 @@ function App() {
           </div>
         )}
 
-        {activeTab === 'case-studies' && (
-          <div className="w-full xl:w-[1000px] space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
-            <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-              <span className="w-8 h-1 bg-gradient-to-r from-primary to-secondary rounded-full inline-block"></span>
-              Exercise 2
-            </h2>
-            <DataDisplay />
-          </div>
-        )}
-
         {activeTab === 'exercise-1' && (
           <div className="w-full xl:w-[1000px] space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
@@ -55,6 +45,16 @@ function App() {
               Exercise 1
             </h2>
             <Latihan1Display />
+          </div>
+        )}
+
+        {activeTab === 'case-studies' && (
+          <div className="w-full xl:w-[1000px] space-y-6 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
+              <span className="w-8 h-1 bg-gradient-to-r from-primary to-secondary rounded-full inline-block"></span>
+              Exercise 2
+            </h2>
+            <DataDisplay />
           </div>
         )}
 

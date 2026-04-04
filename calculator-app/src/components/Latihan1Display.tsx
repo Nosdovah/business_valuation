@@ -2,7 +2,132 @@ import React from 'react';
 import data from '../data/jawaban_latihan_1.json';
 
 const Latihan1Display: React.FC = () => {
-    const { mata_kuliah, topik, jumlah_soal, soal_jawaban } = data.latihan_nilai_waktu_uang;
+    const { soal_jawaban } = data.latihan_nilai_waktu_uang;
+
+    const formatStep = (step: string) => {
+        // Convert to standard math symbols
+        const formatted = step
+            .replace(/\s\*\s/g, ' × ')
+            .replace(/\s\/\s/g, ' ÷ ')
+            .replace(/\*/g, ' × ')
+            .replace(/\//g, ' ÷ ');
+
+        // Match superscripts like ^n, ^-n, ^12, ^-12
+        const parts = formatted.split(/(\^[-?\d\w]+)/g);
+
+        return (
+            <span className="font-serif italic tracking-wide flex flex-wrap items-center gap-0.5">
+                {parts.map((part, i) => {
+                    if (part.startsWith('^')) {
+                        return (
+                            <sup key={i} className="text-[0.65em] font-bold not-italic translate-y-[-0.1em] inline-block">
+                                {part.slice(1)}
+                            </sup>
+                        );
+                    }
+                    return <span key={i}>{part}</span>;
+                })}
+            </span>
+        );
+    };
+
+    const renderSteps = (soal: any) => {
+        const steps: string[] = [];
+        const fNum = (n: number) => n.toLocaleString('en-US', { maximumFractionDigits: 5 });
+        const fCur = (n: number) => n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+
+        switch (soal.nomor) {
+            case 1: {
+                const cf = soal.input.cash_flow;
+                const n = soal.input.periode_tahun;
+                soal.input.suku_bunga_list.forEach((r: number) => {
+                    const powVal = Math.pow(1 + r, n);
+                    const res = cf * powVal;
+                    steps.push(`Rate ${(r * 100).toFixed(0)}%: FV = ${fNum(cf)} × (1 + ${r})^${n}`);
+                    steps.push(`Rate ${(r * 100).toFixed(0)}%: FV = ${fNum(cf)} × ${fNum(powVal)} = ${fCur(res)}`);
+                });
+                break;
+            }
+            case 2: {
+                const cf = soal.input.cash_flow;
+                const r = soal.input.suku_bunga;
+                const n = soal.input.periode_tahun;
+                const powVal = Math.pow(1 + r, n);
+                steps.push(`FV = ${fNum(cf)} × (1 + ${r})^${n}`);
+                steps.push(`FV = ${fNum(cf)} × ${fNum(powVal)}`);
+                steps.push(`FV = ${fCur(soal.hasil)}`);
+                break;
+            }
+            case 3: {
+                const fv = soal.input.future_value;
+                const n = soal.input.periode_tahun;
+                soal.input.suku_bunga_list.forEach((r: number) => {
+                    const powVal = Math.pow(1 + r, n);
+                    const res = fv / powVal;
+                    steps.push(`Rate ${(r * 100).toFixed(0)}%: PV = ${fNum(fv)} ÷ (1 + ${r})^${n}`);
+                    steps.push(`Rate ${(r * 100).toFixed(0)}%: PV = ${fNum(fv)} ÷ ${fNum(powVal)} = ${fCur(res)}`);
+                });
+                break;
+            }
+            case 4: {
+                const fv = soal.input.future_value;
+                const r = soal.input.suku_bunga;
+                const n = soal.input.periode_tahun;
+                const powVal = Math.pow(1 + r, n);
+                steps.push(`PV = ${fNum(fv)} ÷ (1 + ${r})^${n}`);
+                steps.push(`PV = ${fNum(fv)} ÷ ${fNum(powVal)}`);
+                steps.push(`PV = ${fCur(soal.hasil)}`);
+                break;
+            }
+            case 5: {
+                const target = soal.input.target_multiplier;
+                const r = soal.input.suku_bunga;
+                steps.push(`n = ln(${target}) ÷ ln(1 + ${r})`);
+                steps.push(`n = ${fNum(Math.log(target))} ÷ ${fNum(Math.log(1 + r))}`);
+                steps.push(`n = ${fNum(soal.hasil_tahun)} Tahun`);
+                break;
+            }
+            case 6: {
+                const pv = soal.input.present_value;
+                const fv = soal.input.future_value;
+                const n = soal.input.periode_tahun;
+                steps.push(`r = (${fNum(fv)} ÷ ${fNum(pv)})^(1 / ${n}) - 1`);
+                steps.push(`r = (${fNum(fv / pv)})^(${fNum(1 / n)}) - 1`);
+                steps.push(`r = ${fNum(Math.pow(fv / pv, 1 / n))} - 1`);
+                steps.push(`r = ${fNum(soal.hasil_decimal)} (${soal.hasil_persentase})`);
+                break;
+            }
+            case 7: {
+                const pv = soal.input.nilai_awal;
+                const fv = soal.input.nilai_akhir;
+                const n = soal.input.periode_tahun;
+                steps.push(`r = (${fNum(fv)} ÷ ${fNum(pv)})^(1 / ${n}) - 1`);
+                steps.push(`r = (${fNum(fv / pv)})^(${fNum(1 / n)}) - 1`);
+                steps.push(`r = ${fNum(Math.pow(fv / pv, 1 / n))} - 1`);
+                steps.push(`r = ${fNum(soal.hasil_decimal)} (${soal.hasil_persentase})`);
+                break;
+            }
+        }
+
+        return (
+            <div className="space-y-4 mt-2">
+                {steps.map((step, index) => (
+                    <div
+                        key={index}
+                        className="flex items-start gap-3 text-sm md:text-base text-textPrimary/90 animate-fade-in opacity-0"
+                        style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'forwards' }}
+                    >
+                        <span className="mt-1 flex-none w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary border border-primary/30">
+                            {index + 1}
+                        </span>
+                        <div className="flex-grow overflow-hidden">
+                            {formatStep(step)}
+                        </div>
+                    </div>
+                ))}
+            </div>
+        );
+    };
 
     const renderFormula = (formula: string) => {
         if (!formula) return null;
@@ -76,13 +201,6 @@ const Latihan1Display: React.FC = () => {
 
     return (
         <div className="space-y-6">
-            <div className="bg-white/5 p-6 rounded-2xl border border-white/10 mb-8 backdrop-blur-md text-center max-w-3xl mx-auto shadow-xl">
-                <h2 className="text-2xl font-bold gradient-text mb-2 text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">{mata_kuliah}</h2>
-                <p className="text-textPrimary tracking-wide text-lg mb-4">{topik}</p>
-                <span className="inline-block px-4 py-1.5 bg-black/40 rounded-full text-sm font-medium border border-white/10 text-textSecondary uppercase tracking-wider shadow-inner">
-                    Total Soal: <span className="text-white font-bold">{jumlah_soal}</span>
-                </span>
-            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {soal_jawaban.map((soal) => (
@@ -135,6 +253,13 @@ const Latihan1Display: React.FC = () => {
                                         </div>
                                     </div>
                                 )}
+
+                                <div className="mt-4 pt-4 border-t border-white/5">
+                                    <span className="text-xs text-textSecondary/60 block mb-3 uppercase tracking-wider font-semibold">Langkah-Langkah Perhitungan</span>
+                                    <div className="bg-black/20 rounded-xl p-4 border border-white/5 shadow-inner">
+                                        {renderSteps(soal)}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
