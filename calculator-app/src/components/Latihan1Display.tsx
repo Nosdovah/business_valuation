@@ -216,28 +216,6 @@ const Latihan1Display: React.FC = () => {
                         </p>
 
                         <div className="space-y-4">
-                            <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
-                                <span className="text-xs text-primary uppercase tracking-wider font-semibold block mb-2 font-accent">Result</span>
-
-                                {renderResult(soal)}
-
-                                {soal.rumus && (
-                                    <div className="mt-3 overflow-x-auto">
-                                        <span className="text-xs text-textSecondary/60 block mb-1">Formula:</span>
-                                        <div className="text-textPrimary/90 bg-white/5 p-3 rounded border border-white/5 min-h-[3rem] flex items-center">
-                                            {renderFormula(soal.rumus)}
-                                        </div>
-                                    </div>
-                                )}
-
-                                <div className="mt-4 pt-4 border-t border-white/5">
-                                    <span className="text-xs text-textSecondary/60 block mb-3 uppercase tracking-wider font-semibold">Langkah-Langkah Perhitungan</span>
-                                    <div className="bg-black/20 rounded-xl p-4 border border-white/5 shadow-inner">
-                                        {renderSteps(soal)}
-                                    </div>
-                                </div>
-                            </div>
-
                             <div className="bg-black/30 rounded-lg p-3 border border-white/5">
                                 <span className="text-xs text-textSecondary uppercase tracking-wider font-semibold block mb-2">Input Parameters</span>
                                 <div className="grid grid-cols-2 gap-2 text-sm">
@@ -259,6 +237,28 @@ const Latihan1Display: React.FC = () => {
                                             </span>
                                         </div>
                                     ))}
+                                </div>
+                            </div>
+
+                            <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
+                                <span className="text-xs text-primary uppercase tracking-wider font-semibold block mb-2 font-accent">Result</span>
+
+                                {renderResult(soal)}
+
+                                {soal.rumus && (
+                                    <div className="mt-3 overflow-x-auto">
+                                        <span className="text-xs text-textSecondary/60 block mb-1">Formula:</span>
+                                        <div className="text-textPrimary/90 bg-white/5 p-3 rounded border border-white/5 min-h-[3rem] flex items-center">
+                                            {renderFormula(soal.rumus)}
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="mt-4 pt-4 border-t border-white/5">
+                                    <span className="text-xs text-textSecondary/60 block mb-3 uppercase tracking-wider font-semibold">Langkah-Langkah Perhitungan</span>
+                                    <div className="bg-black/20 rounded-xl p-4 border border-white/5 shadow-inner">
+                                        {renderSteps(soal)}
+                                    </div>
                                 </div>
                             </div>
                         </div>
