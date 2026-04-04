@@ -198,26 +198,6 @@ const DataDisplay: React.FC = () => {
           </p>
           
           <div className="space-y-4">
-            <div className="bg-black/30 rounded-lg p-3 border border-white/5">
-              <span className="text-xs text-textSecondary uppercase tracking-wider font-semibold block mb-2">Input Parameters</span>
-              <div className="grid grid-cols-2 gap-2 text-sm">
-                {Object.entries(problem.input).map(([key, value]) => (
-                  <div key={key} className="flex flex-col">
-                    <span className="text-textSecondary/70 truncate uppercase text-[10px]" title={key}>
-                      {key.replace(/_/g, ' ')}
-                    </span>
-                    <span className="font-medium">
-                      {typeof value === 'number' 
-                        ? (key.toLowerCase().includes('bunga') || key.toLowerCase().includes('rate') || key.toLowerCase().includes('interest')
-                           ? `${(value * 100).toLocaleString('en-US', { maximumFractionDigits: 4 })}%`
-                           : value.toLocaleString('en-US'))
-                        : value}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             <div className="bg-primary/10 rounded-lg p-3 border border-primary/20">
               <span className="text-xs text-primary uppercase tracking-wider font-semibold block mb-2 font-accent">Result</span>
               <div className="flex items-baseline gap-2">
@@ -238,6 +218,26 @@ const DataDisplay: React.FC = () => {
                 <div className="bg-black/20 rounded-xl p-4 border border-white/5 shadow-inner">
                   {renderSteps(problem)}
                 </div>
+              </div>
+            </div>
+
+            <div className="bg-black/30 rounded-lg p-3 border border-white/5">
+              <span className="text-xs text-textSecondary uppercase tracking-wider font-semibold block mb-2">Input Parameters</span>
+              <div className="grid grid-cols-2 gap-2 text-sm">
+                {Object.entries(problem.input).map(([key, value]) => (
+                  <div key={key} className="flex flex-col">
+                    <span className="text-textSecondary/70 truncate uppercase text-[10px]" title={key}>
+                      {key.replace(/_/g, ' ')}
+                    </span>
+                    <span className="font-medium">
+                      {typeof value === 'number' 
+                        ? (key.toLowerCase().includes('bunga') || key.toLowerCase().includes('rate') || key.toLowerCase().includes('interest')
+                           ? `${(value * 100).toLocaleString('en-US', { maximumFractionDigits: 4 })}%`
+                           : value.toLocaleString('en-US'))
+                        : value}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
