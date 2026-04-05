@@ -15,8 +15,8 @@ const DataDisplay: React.FC = () => {
       .replace(/\*/g, ' × ')
       .replace(/\//g, ' ÷ ');
 
-    // Match superscripts like ^n, ^-n, ^12
-    const parts = formatted.split(/(\^[-?\d\w]+)/g);
+    // Match superscripts like ^n, ^-n, ^12, or complex ones like ^(1/n)
+    const parts = formatted.split(/(\^(?:[-?\d\w\.]+|\([^)]+\)))/g);
     
     return (
       <span className="font-serif italic text-base tracking-wide flex flex-wrap items-center gap-0.5">
@@ -42,8 +42,8 @@ const DataDisplay: React.FC = () => {
       .replace(/\*/g, ' × ')
       .replace(/\//g, ' ÷ ');
 
-    // Match superscripts like ^n, ^-n, ^12, ^-12
-    const parts = formatted.split(/(\^[-?\d\w]+)/g);
+    // Match superscripts like ^n, ^-n, ^12, ^-12, or complex ones like ^(1/n)
+    const parts = formatted.split(/(\^(?:[-?\d\w\.]+|\([^)]+\)))/g);
     
     return (
       <span className="font-serif italic tracking-wide flex flex-wrap items-center gap-0.5">
