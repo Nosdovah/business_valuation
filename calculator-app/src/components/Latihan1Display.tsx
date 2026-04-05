@@ -43,8 +43,8 @@ const Latihan1Display: React.FC = () => {
                 soal.input.suku_bunga_list.forEach((r: number) => {
                     const powVal = Math.pow(1 + r, n);
                     const res = cf * powVal;
-                    steps.push(`Rate ${(r * 100).toFixed(0)}%: FV = ${fNum(cf)} × (1 + ${r})^${n}`);
-                    steps.push(`Rate ${(r * 100).toFixed(0)}%: FV = ${fNum(cf)} × ${fNum(powVal)} = ${fCur(res)}`);
+                    const unit = soal.input.unit_mata_uang || '';
+                    steps.push(`Rate ${(r * 100).toFixed(0)}%: FV = ${fNum(cf)} × (1 + ${r})^${n} = ${fCur(res)} ${unit}`);
                 });
                 break;
             }
@@ -55,7 +55,7 @@ const Latihan1Display: React.FC = () => {
                 const powVal = Math.pow(1 + r, n);
                 steps.push(`FV = ${fNum(cf)} × (1 + ${r})^${n}`);
                 steps.push(`FV = ${fNum(cf)} × ${fNum(powVal)}`);
-                steps.push(`FV = ${fCur(soal.hasil)}`);
+                steps.push(`FV = ${fCur(soal.hasil)} ${soal.input.unit_mata_uang || ''}`);
                 break;
             }
             case 3: {
@@ -64,8 +64,8 @@ const Latihan1Display: React.FC = () => {
                 soal.input.suku_bunga_list.forEach((r: number) => {
                     const powVal = Math.pow(1 + r, n);
                     const res = fv / powVal;
-                    steps.push(`Rate ${(r * 100).toFixed(0)}%: PV = ${fNum(fv)} ÷ (1 + ${r})^${n}`);
-                    steps.push(`Rate ${(r * 100).toFixed(0)}%: PV = ${fNum(fv)} ÷ ${fNum(powVal)} = ${fCur(res)}`);
+                    const unit = soal.input.unit_mata_uang || '';
+                    steps.push(`Rate ${(r * 100).toFixed(0)}%: PV = ${fNum(fv)} ÷ (1 + ${r})^${n} = ${fCur(res)} ${unit}`);
                 });
                 break;
             }
@@ -76,7 +76,7 @@ const Latihan1Display: React.FC = () => {
                 const powVal = Math.pow(1 + r, n);
                 steps.push(`PV = ${fNum(fv)} ÷ (1 + ${r})^${n}`);
                 steps.push(`PV = ${fNum(fv)} ÷ ${fNum(powVal)}`);
-                steps.push(`PV = ${fCur(soal.hasil)}`);
+                steps.push(`PV = ${fCur(soal.hasil)} ${soal.input.unit_mata_uang || ''}`);
                 break;
             }
             case 5: {
@@ -165,6 +165,9 @@ const Latihan1Display: React.FC = () => {
                     <span className="text-2xl font-bold gradient-text">
                         {soal.hasil.toLocaleString('en-US', { maximumFractionDigits: 2 })}
                     </span>
+                    {soal.input.unit_mata_uang && (
+                        <span className="text-sm font-medium text-textPrimary/80">{soal.input.unit_mata_uang}</span>
+                    )}
                 </div>
             );
         }
@@ -174,7 +177,14 @@ const Latihan1Display: React.FC = () => {
                     {Object.entries(soal.hasil_per_rate).map(([key, val]) => (
                         <div key={key} className="bg-black/20 p-3 rounded-lg border border-white/5 flex flex-col justify-center">
                             <span className="text-xs text-textSecondary mb-1 font-medium capitalize">{key.replace(/_/g, ' ')}</span>
-                            <span className="text-xl font-bold text-primary">{typeof val === 'number' ? val.toLocaleString('en-US', { maximumFractionDigits: 2 }) : String(val)}</span>
+                            <div className="flex items-baseline gap-1.5">
+                                <span className="text-xl font-bold text-primary">
+                                    {typeof val === 'number' ? val.toLocaleString('en-US', { maximumFractionDigits: 2 }) : String(val)}
+                                </span>
+                                {soal.input.unit_mata_uang && (
+                                    <span className="text-xs font-medium text-textSecondary">{soal.input.unit_mata_uang}</span>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>
